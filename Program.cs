@@ -1,15 +1,23 @@
 using System;
-using System.IO;
-using System.Threading;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Threading;
 
 // Quick'n'Dirty Hack - based on: http://msdn.microsoft.com/en-GB/library/system.io.filesystemwatcher.changed.aspx
 
-namespace when_changed;
+namespace WhenChanged;
 
 internal static class Program
 {
+    private enum State
+    {
+        Watching,
+        WaitingToExecute,
+        Executing,
+        ExecutingDirty,
+    }
+
     private static string? mCommand;
 
     private static State mState;
@@ -52,10 +60,9 @@ internal static class Program
         }
     }
 
-    public static FileSystemWatcher CreateWatcher(string path)
+    private static FileSystemWatcher CreateWatcher(string path)
     {
         // Two things are determined from the argument:
-        string dirToWatch; // The directory to watch.
         string? fileFilter; // The filter for which files in that directory to watch.
 
         // ./
@@ -68,7 +75,7 @@ internal static class Program
             path = Path.Combine(Directory.GetCurrentDirectory(), path);
         }
 
-        dirToWatch = Path.GetFullPath(path);
+        var dirToWatch = Path.GetFullPath(path);
         if (path.EndsWith("/") || path.EndsWith("\\"))
         {
             fileFilter = "**";
@@ -133,9 +140,14 @@ internal static class Program
         }
     }
 
-    private static void ThreadRun(object changedFile)
+    private static void ThreadRun(object? changedFile)
     {
-        var changedfile = (string)changedFile;
+        if (changedFile == null)
+        {
+            throw new ArgumentException("changed file cannot be null!");
+        }
+
+        var changedfile = (string) changedFile;
         var again = true;
         while (again)
         {

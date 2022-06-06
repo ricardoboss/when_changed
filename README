@@ -1,6 +1,3 @@
-when_changed
-============
-
 Runs a Command when a file changes (Windows only)
 
 usage:
@@ -8,12 +5,8 @@ when_changed (file path) (command) (optional-parameters)
 
 when_changed C:\somedir\foo.txt myapp.exe
 when_changed C:\somedir\*.txt myapp.exe
-when_changed C:\somedir\**.txt myapp.exe   (recursive)
 when_changed C:\somedir\* myapp.exe
-when_changed C:\somedir\** myapp.exe (recursive)
-when_changed fileincurrentdir.txt myapp.exe
 when_changed C:\somedir\foo.txt myapp.exe bar wibble 123
-when_changed C:\somedir\*.txt myapp.exe %file% 
 
 Notes:
 - Press 'F' to force the command to run.
@@ -21,9 +14,8 @@ Notes:
 - The utility will will re-run the command if file changes whilst command is running.
 - Beware of creating an infinite loop!
 - (file path) must be a file path with wildcards -- not a directory.
-- The search is recursive if the filename contains a double-asterisk ** (wildcards in directory names not supported.)
-- Include a %file% parameter to pass the full path of the changed file to the target application. **Note this parameter omitted when 'force running' the target application**. (thanks to borconi)
+- Search is not recursive (this can easily be turned on in the code).
+
+(Very quick/buggy implementation! 
 
 feedback to: blamey.ben (at) gmail.com
-
-See http://benblamey.com/code for binaries.
