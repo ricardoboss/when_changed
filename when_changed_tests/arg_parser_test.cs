@@ -35,7 +35,7 @@ namespace when_changed_tests
         [TestMethod]
         public void TestMethod1()
         {      
-            var watcher = Program.createWatcher("C:/foo.txt");
+            var watcher = Program.CreateWatcher("C:/foo.txt");
             Assert.AreEqual(@"C:\", watcher.Path);
             Assert.AreEqual("foo.txt", watcher.Filter);
         }
@@ -43,7 +43,7 @@ namespace when_changed_tests
         [TestMethod]
         public void TestMethod2()
         {
-            var watcher = Program.createWatcher("C:/*.txt");
+            var watcher = Program.CreateWatcher("C:/*.txt");
             Assert.AreEqual(@"C:\", watcher.Path);
             Assert.AreEqual("*.txt", watcher.Filter);
         }
@@ -51,7 +51,7 @@ namespace when_changed_tests
         [TestMethod]
         public void TestMethod3()
         {
-            var watcher = Program.createWatcher("C:/*");
+            var watcher = Program.CreateWatcher("C:/*");
             Assert.AreEqual(@"C:\", watcher.Path);
             Assert.AreEqual("*", watcher.Filter);
         }
